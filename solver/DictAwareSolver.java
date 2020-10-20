@@ -11,11 +11,17 @@ import solver.HangmanSolver;
  */
 public class DictAwareSolver extends HangmanSolver {
 
+    /** Set dictionary to keep the whole given Dictionary **/
     private Set < String > dictionary = null;
+
+    /** Set guessedLetters to hold all the letters which are already guessed **/
     private Set < Character > guessedLetters = null;
+
+    /** wordLen records length of the given word **/
     private int wordLen = 0;
-    HashMap < Character,
-            Integer > map = null;
+
+    /** **/
+    HashMap < Character, Integer > map = null;
 
     /**
      * Constructor.
@@ -33,23 +39,38 @@ public class DictAwareSolver extends HangmanSolver {
         map.put('\'', 0);
     } // end of DictAwareSolver()
 
+    /**
+     * Method to start new game
+     *
+     * @param wordLengths Length of words we are guessing for.
+     * @param maxIncorrectGuesses Maximum number of incorrect guesses we are allowed.
+     */
     @Override
     public void newGame(int[] wordLengths, int maxIncorrectGuesses) {
-        // Implement me!
         System.out.println("New Game Has Started");
-        String s = "";
+
+        // totalWordLength stores length of the word to be guessed
+        String totalWordLength = "";
+
+        // calculating length of the word provided
         for (int wordLength: wordLengths) {
-            s += wordLength + " ";
+            totalWordLength += wordLength + " ";
         }
-        System.out.println("Word(s) Lengths are: " + s);
+        System.out.println("Word Length is : " + totalWordLength);
         System.out.println("Total Number of guesses: " + maxIncorrectGuesses);
+        System.out.println("------------------------------------------------");
         System.out.println("------------------------------------------------");
         wordLen = wordLengths[0];
     } // end of newGame()
 
+
+    /**
+     * Method to make a guess
+     *
+     * @return letter method have guessed
+     */
     @Override
     public char makeGuess() {
-        // Implement me!
         for (Iterator < String > i = dictionary.iterator(); i.hasNext();) {
             String w = i.next();
             if (w.length() != wordLen) {
@@ -86,6 +107,14 @@ public class DictAwareSolver extends HangmanSolver {
         return letter;
     } // end of makeGuess()
 
+
+    /**
+     *
+     *
+     * @param c
+     * @param bGuess True if the character guessed is in one or more of the words, otherwise false.
+     * @param lPositions
+     */
     @Override
     public void guessFeedback(char c, Boolean bGuess, ArrayList < ArrayList < Integer >> lPositions) {
         //  Implement me!
