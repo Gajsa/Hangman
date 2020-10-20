@@ -1,11 +1,11 @@
 # The Hangman
-####Algorithms and Analysis
+### Algorithms and Analysis
 
-######COSC 1285
+###### COSC 1285
 
-#####Assignment 2: Hangman
+#### Assignment 2: Hangman
 
-#####Developed by - 
+##### Developed by - 
 
 Group - 17
 
