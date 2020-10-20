@@ -3,14 +3,16 @@ package solver;
 import java.util. * ;
 
 /**
- * Random guessing strategy for Hangman. (task A) You'll need to complete the
- * implementation of this.
+ * Random guessing strategy for Hangman. (task A)
  *
  * @author Jeffrey Chan, RMIT 2020
  */
 public class RandomGuessSolver extends HangmanSolver {
 
+    /** dictionary **/
     private Set < String > dictionary = null;
+
+    /** guessedLetters is to store characters that are guessed. **/
     private Set < Character > guessedLetters = null;
 
     /**
@@ -20,57 +22,74 @@ public class RandomGuessSolver extends HangmanSolver {
      * from.
      */
     public RandomGuessSolver(Set < String > dictionary) {
-        // Implement me!
         this.dictionary = dictionary;
         guessedLetters = new HashSet < >();
     } // end of RandomGuessSolver()
 
+
+    /**
+     * Method to start a new game
+     *
+     * @param wordLengths Length of words we are guessing for.
+     * @param maxIncorrectGuesses Maximum number of incorrect guesses we are allowed.
+     */
     @Override
     public void newGame(int[] wordLengths, int maxIncorrectGuesses) {
-        // Implement me!
         System.out.println("New Game Has Started");
-        String s = "";
+
+        // calculates and stores length of the word
+        String totalWordLength = "";
+
         for (int wordLength: wordLengths) {
-            s += wordLength + " ";
+            totalWordLength += wordLength + " ";
         }
-        System.out.println("Word(s) Lengths are: " + s);
+        System.out.println("Word Length is: " + totalWordLength);
         System.out.println("Total Number of guesses: " + maxIncorrectGuesses);
+        System.out.println("------------------------------------------------");
         System.out.println("------------------------------------------------");
     } // end of newGame()
 
+
+    /**
+     * Method to guess a random character
+     *
+     * @return letter method have guessed
+     */
     @Override
     public char makeGuess() {
-        // Implement me!
         //generating a random letter
-        Random r = new Random();
-        char letter = (char)('a' + r.nextInt(27));
+        Random random = new Random();
+        char letter = (char)('a' + random.nextInt(27));
         if (letter == '{') {
             letter = '\'';
         }
+
+        // to check if the letter is already guessed and if yes, get random letter again
         while (guessedLetters.contains(letter)) {
-            letter = (char)('a' + r.nextInt(27));
+            letter = (char)('a' + random.nextInt(27));
             if (letter == '{') {
                 letter = '\'';
-
             }
         }
+        // saving guessed letter
         guessedLetters.add(letter);
-        // TODO: This is a placeholder, replace with appropriate return value.
+
+        // return the letter to make new guess
         return letter;
     } // end of makeGuess()
 
+
+    /**
+     * Method need not to be implemented for random guess strategy
+     *
+     * @param c
+     * @param bGuess True if the character guessed is in one or more of the words, otherwise false.
+     * @param lPositions
+     */
     @Override
     public void guessFeedback(char c, Boolean bGuess, ArrayList < ArrayList < Integer >> lPositions) {
-        // Implement me!
-    /*if(bGuess){
-            System.out.println("Letter "+c+" is found at the following positions: ");
-            for (int a = 0; a < lPositions.size(); a++) {
-                System.out.println(lPositions.get(a).toString());
-            }
-        }
-        else{
-            System.out.println("Letter "+c+" is not found!");
-        }*/
+        // No Implementation required.
+
     } // end of guessFeedback()
 
 } // end of class RandomGuessSolver
