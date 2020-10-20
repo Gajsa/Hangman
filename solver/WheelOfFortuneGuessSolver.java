@@ -14,7 +14,7 @@ public class WheelOfFortuneGuessSolver extends HangmanSolver {
     private Set<Character> guessedLetters = null;
     private int wordLen = 0;
     HashMap<Character, Integer> map = null;
-    
+
     /**
      * Constructor.
      *
@@ -55,14 +55,14 @@ public class WheelOfFortuneGuessSolver extends HangmanSolver {
                 words.add(w);
             }
         }
-        
-        
+
+
         for (String w: words) {
             for (Character c: map.keySet()) {
                 if(w.contains(c+"")){
                     map.replace(c, map.get(c)+1);
                 }
-            } 
+            }
         }
         int max = Collections.max(map.values());
         char letter = '\0';
