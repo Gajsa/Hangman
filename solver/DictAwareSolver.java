@@ -1,8 +1,6 @@
 package solver;
 
-import java.util. * ;
-import java.lang.System;
-import solver.HangmanSolver;
+import java.util.*;
 
 /**
  * Dictionary aware guessing strategy for Hangman. (task B)
@@ -11,28 +9,36 @@ import solver.HangmanSolver;
  */
 public class DictAwareSolver extends HangmanSolver {
 
-    /** Set dictionary to keep the whole given Dictionary **/
-    private Set < String > dictionary = null;
+    /**
+     * Set dictionary to keep the whole given Dictionary
+     **/
+    private Set<String> dictionary = null;
 
-    /** Set guessedLetters to hold all the letters which are already guessed **/
-    private Set < Character > guessedLetters = null;
+    /**
+     * Set guessedLetters to hold all the letters which are already guessed
+     **/
+    private Set<Character> guessedLetters = null;
 
-    /** wordLen records length of the given word **/
+    /**
+     * wordLen records length of the given word
+     **/
     private int wordLen = 0;
 
-    /** **/
-    HashMap < Character, Integer > map = null;
+    /**
+     *
+     **/
+    HashMap<Character, Integer> map = null;
 
     /**
      * Constructor.
      *
      * @param dictionary Dictionary of words that the guessed words are drawn
-     * from.
+     *                   from.
      */
-    public DictAwareSolver(Set < String > dictionary) {
+    public DictAwareSolver(Set<String> dictionary) {
         this.dictionary = dictionary;
-        guessedLetters = new HashSet < >();
-        map = new HashMap < >();
+        guessedLetters = new HashSet<>();
+        map = new HashMap<>();
         for (int a = 97; a < 123; a++) {
             map.put((char) a, 0);
         }
@@ -42,7 +48,7 @@ public class DictAwareSolver extends HangmanSolver {
     /**
      * Method to start new game
      *
-     * @param wordLengths Length of words we are guessing for.
+     * @param wordLengths         Length of words we are guessing for.
      * @param maxIncorrectGuesses Maximum number of incorrect guesses we are allowed.
      */
     @Override
@@ -53,7 +59,7 @@ public class DictAwareSolver extends HangmanSolver {
         String totalWordLength = "";
 
         // calculating length of the word provided
-        for (int wordLength: wordLengths) {
+        for (int wordLength : wordLengths) {
             totalWordLength += wordLength + " ";
         }
         System.out.println("Word Length is : " + totalWordLength);
@@ -71,23 +77,23 @@ public class DictAwareSolver extends HangmanSolver {
      */
     @Override
     public char makeGuess() {
-        for (Iterator < String > i = dictionary.iterator(); i.hasNext();) {
+        for (Iterator<String> i = dictionary.iterator(); i.hasNext(); ) {
             String w = i.next();
             if (w.length() != wordLen) {
                 i.remove();
             }
         }
-        ArrayList < String > words = new ArrayList < >();
-        for (String w: dictionary) {
+        ArrayList<String> words = new ArrayList<>();
+        for (String w : dictionary) {
             words.add(w);
         }
-        map = new HashMap < >();
+        map = new HashMap<>();
         for (int a = 97; a < 123; a++) {
             map.put((char) a, 0);
         }
         map.put('\'', 0);
-        for (String w: words) {
-            for (Character c: map.keySet()) {
+        for (String w : words) {
+            for (Character c : map.keySet()) {
                 if (w.contains(c + "")) {
                     map.replace(c, map.get(c) + 1);
                 }
@@ -95,62 +101,55 @@ public class DictAwareSolver extends HangmanSolver {
         }
         char letter = '\0';
         int max = 0;
-        for (char c: map.keySet()) {
+        for (char c : map.keySet()) {
             if ((map.get(c) > max) && !guessedLetters.contains(c)) {
                 letter = c;
                 max = map.get(c);
             }
         }
-        if (!guessedLetters.contains(letter)) {
-            guessedLetters.add(letter);
-        }
+        guessedLetters.add(letter);
         return letter;
     } // end of makeGuess()
 
 
     /**
-     *
-     *
      * @param c
-     * @param bGuess True if the character guessed is in one or more of the words, otherwise false.
+     * @param bGuess     True if the character guessed is in one or more of the words, otherwise false.
      * @param lPositions
      */
     @Override
-    public void guessFeedback(char c, Boolean bGuess, ArrayList < ArrayList < Integer >> lPositions) {
-        //  Implement me!
+    public void guessFeedback(char c, Boolean bGuess, ArrayList<ArrayList<Integer>> lPositions) {
+        String cStr = c + "";
+
         if (bGuess) {
-            ArrayList < Integer > positions = lPositions.get(0);
-            for (Iterator < String > i = dictionary.iterator(); i.hasNext();) {
-                String w = i.next();
-                for (Integer pos: positions) {
-                    if (w.charAt(pos) != c) {
-                        i.remove();
+//            ArrayList<Integer> positions = lPositions.get(0);
+
+            for (Iterator<String> iterator = dictionary.iterator(); iterator.hasNext(); ) {
+                String word = iterator.next();
+                for (Integer pos : lPositions.get(0)) {
+                    if (word.charAt(pos) != cStr.charAt(0)) {
+                        iterator.remove();
                         break;
                     }
                 }
             }
-            for (Iterator < String > i = dictionary.iterator(); i.hasNext();) {
-                String w = i.next();
-                if (w.contains(c + "")) {
-                    ArrayList < Integer > pos2 = new ArrayList < >();
-                    for (int a = 0; a < w.length(); a++) {
-                        if (w.charAt(a) == c) {
+
+            for (Iterator<String> iterator = dictionary.iterator(); iterator.hasNext(); ) {
+                String word = iterator.next();
+                if (word.contains(cStr)) {
+                    ArrayList<Integer> pos2 = new ArrayList<>();
+                    for (int a = 0; a < word.length(); a++) {
+                        if (word.charAt(a) == cStr.charAt(0)) {
                             pos2.add(a);
                         }
                     }
-                    if (!pos2.equals(positions)) {
-                        i.remove();
+                    if (!pos2.equals(lPositions.get(0))) {
+                        iterator.remove();
                     }
                 }
             }
-        }
-        else {
-            for (Iterator < String > i = dictionary.iterator(); i.hasNext();) {
-                String w = i.next();
-                if (w.contains(c + "")) {
-                    i.remove();
-                }
-            }
+        } else {
+            dictionary.removeIf(word -> word.contains(cStr));
         }
     } // end of guessFeedback()
 
