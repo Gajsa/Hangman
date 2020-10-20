@@ -124,18 +124,44 @@ public class DictAwareSolver extends HangmanSolver {
         if (bGuess) {
 //            ArrayList<Integer> positions = lPositions.get(0);
 
-            for (Iterator<String> iterator = dictionary.iterator(); iterator.hasNext(); ) {
-                String word = iterator.next();
+//            for (Iterator<String> iterator = dictionary.iterator(); iterator.hasNext(); ) {
+//                String word = iterator.next();
+//                for (Integer pos : lPositions.get(0)) {
+//                    if (word.charAt(pos) != cStr.charAt(0)) {
+//                        iterator.remove();
+//                        break;
+//                    }
+//                }
+//            }
+
+            ArrayList<String> removeWords = new ArrayList<>();
+            for (String word : dictionary) {
                 for (Integer pos : lPositions.get(0)) {
                     if (word.charAt(pos) != cStr.charAt(0)) {
-                        iterator.remove();
+                        removeWords.add(word);
                         break;
                     }
                 }
             }
+            dictionary.removeAll(removeWords);
 
-            for (Iterator<String> iterator = dictionary.iterator(); iterator.hasNext(); ) {
-                String word = iterator.next();
+//            for (Iterator<String> iterator = dictionary.iterator(); iterator.hasNext(); ) {
+//                String word = iterator.next();
+//                if (word.contains(cStr)) {
+//                    ArrayList<Integer> pos2 = new ArrayList<>();
+//                    for (int a = 0; a < word.length(); a++) {
+//                        if (word.charAt(a) == cStr.charAt(0)) {
+//                            pos2.add(a);
+//                        }
+//                    }
+//                    if (!pos2.equals(lPositions.get(0))) {
+//                        iterator.remove();
+//                    }
+//                }
+//            }
+
+            removeWords.clear();
+            for (String word : dictionary) {
                 if (word.contains(cStr)) {
                     ArrayList<Integer> pos2 = new ArrayList<>();
                     for (int a = 0; a < word.length(); a++) {
@@ -144,10 +170,11 @@ public class DictAwareSolver extends HangmanSolver {
                         }
                     }
                     if (!pos2.equals(lPositions.get(0))) {
-                        iterator.remove();
+                        removeWords.add(word);
                     }
                 }
             }
+            dictionary.removeAll(removeWords);
         } else {
             dictionary.removeIf(word -> word.contains(cStr));
         }

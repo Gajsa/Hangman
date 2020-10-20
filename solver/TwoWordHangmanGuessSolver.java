@@ -100,21 +100,47 @@ public class TwoWordHangmanGuessSolver extends HangmanSolver {
         String cStr = c + "";
 
         if (bGuess) {
-            for (int a = 0; a < 2; a++) {
-//                ArrayList<Integer> positions = lPositions.get(a);
-                if (lPositions.get(a) != null) {
-                    for (Iterator<String> iterator = dictionary.get(a).iterator(); iterator.hasNext(); ) {
-                        String word = iterator.next();
-                        for (Integer pos : lPositions.get(a)) {
+            for (int numWords = 0; numWords < 2; numWords++) {
+//                ArrayList<Integer> positions = lPositions.get(numWords);
+                if (lPositions.get(numWords) != null) {
+//                    for (Iterator<String> iterator = dictionary.get(numWords).iterator(); iterator.hasNext(); ) {
+//                        String word = iterator.next();
+//                        for (Integer pos : lPositions.get(numWords)) {
+//                            if (word.charAt(pos) != cStr.charAt(0)) {
+//                                iterator.remove();
+//                                break;
+//                            }
+//                        }
+//                    }
+
+                    ArrayList<String> removeWords = new ArrayList<>();
+                    for (String word : dictionary.get(numWords)) {
+                        for (Integer pos : lPositions.get(numWords)) {
                             if (word.charAt(pos) != cStr.charAt(0)) {
-                                iterator.remove();
+                                removeWords.add(word);
                                 break;
                             }
                         }
                     }
+                    dictionary.get(numWords).removeAll(removeWords);
 
-                    for (Iterator<String> iterator = dictionary.get(a).iterator(); iterator.hasNext(); ) {
-                        String word = iterator.next();
+//                    for (Iterator<String> iterator = dictionary.get(numWords).iterator(); iterator.hasNext(); ) {
+//                        String word = iterator.next();
+//                        if (word.contains(cStr)) {
+//                            ArrayList<Integer> pos2 = new ArrayList<>();
+//                            for (int d = 0; d < word.length(); d++) {
+//                                if (word.charAt(d) == cStr.charAt(0)) {
+//                                    pos2.add(d);
+//                                }
+//                            }
+//                            if (!pos2.equals(lPositions.get(numWords))) {
+//                                iterator.remove();
+//                            }
+//                        }
+//                    }
+
+                    removeWords.clear();
+                    for (String word : dictionary.get(numWords)) {
                         if (word.contains(cStr)) {
                             ArrayList<Integer> pos2 = new ArrayList<>();
                             for (int d = 0; d < word.length(); d++) {
@@ -122,18 +148,19 @@ public class TwoWordHangmanGuessSolver extends HangmanSolver {
                                     pos2.add(d);
                                 }
                             }
-                            if (!pos2.equals(lPositions.get(a))) {
-                                iterator.remove();
+                            if (!pos2.equals(lPositions.get(numWords))) {
+                                removeWords.add(word);
                             }
                         }
                     }
+                    dictionary.get(numWords).removeAll(removeWords);
                 } else {
-                    dictionary.get(a).removeIf(word -> word.contains(cStr));
+                    dictionary.get(numWords).removeIf(word -> word.contains(cStr));
                 }
             }
         } else {
-            for (int a = 0; a < 2; a++) {
-                dictionary.get(a).removeIf(w -> w.contains(cStr));
+            for (int numWords = 0; numWords < 2; numWords++) {
+                dictionary.get(numWords).removeIf(w -> w.contains(cStr));
             }
         }
     } // end of guessFeedback()
