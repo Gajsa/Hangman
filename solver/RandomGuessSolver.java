@@ -9,10 +9,10 @@ import java.util. * ;
  */
 public class RandomGuessSolver extends HangmanSolver {
 
-    /** dictionary **/
+    //Set dictionary to keep the whole given Dictionary
     private Set < String > dictionary = null;
 
-    /** guessedLetters is to store characters that are guessed. **/
+    //Set guessedLetters to hold all the letters which are already guessed
     private Set < Character > guessedLetters = null;
 
     /**
@@ -71,6 +71,7 @@ public class RandomGuessSolver extends HangmanSolver {
                 letter = '\'';
             }
         }
+
         // saving guessed letter
         guessedLetters.add(letter);
 
