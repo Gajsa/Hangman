@@ -3,8 +3,7 @@ package solver;
 import java.util.*;
 
 /**
- * Guessing strategy for Wheel of Fortune Hangman variant. (task D) You'll need
- * to complete the implementation of this.
+ * Guessing strategy for Wheel of Fortune Hangman variant. (task D)
  *
  * @author Jeffrey Chan, RMIT 2020
  */
@@ -22,7 +21,6 @@ public class WheelOfFortuneGuessSolver extends HangmanSolver {
      * from.
      */
     public WheelOfFortuneGuessSolver(Set<String> dictionary) {
-        // Implement me!
         this.dictionary = dictionary;
         guessedLetters = new HashSet<>();
         map = new HashMap<>();
@@ -34,7 +32,6 @@ public class WheelOfFortuneGuessSolver extends HangmanSolver {
 
     @Override
     public void newGame(int[] wordLengths, int maxTries) {
-        // Implement me!
         System.out.println("New Game Has Started");
         String  s = "";
         for (int wordLength : wordLengths) {
@@ -75,7 +72,6 @@ public class WheelOfFortuneGuessSolver extends HangmanSolver {
         if(!guessedLetters.contains(letter)){
             guessedLetters.add(letter);
         }
-        // TODO: This is a placeholder, replace with appropriate return value.
         return letter;
     } // end of makeGuess()
 

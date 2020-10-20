@@ -2,7 +2,6 @@ package solver;
 
 import java.util. * ;
 import java.lang.System;
-import solver.HangmanSolver;
 
 /**
  * Dictionary aware guessing strategy for Hangman. (task B)
@@ -20,8 +19,8 @@ public class DictAwareSolver extends HangmanSolver {
     /** wordLen records length of the given word **/
     private int wordLen = 0;
 
-    /** **/
-    HashMap < Character, Integer > map = null;
+    /** letterCountHashMap to record the letter and count of the words they would be present in **/
+    HashMap < Character, Integer > letterCountHashMap = null;
 
     /**
      * Constructor.
@@ -32,11 +31,11 @@ public class DictAwareSolver extends HangmanSolver {
     public DictAwareSolver(Set < String > dictionary) {
         this.dictionary = dictionary;
         guessedLetters = new HashSet < >();
-        map = new HashMap < >();
+        letterCountHashMap = new HashMap < >();
         for (int a = 97; a < 123; a++) {
-            map.put((char) a, 0);
+            letterCountHashMap.put((char) a, 0);
         }
-        map.put('\'', 0);
+        letterCountHashMap.put('\'', 0);
     } // end of DictAwareSolver()
 
     /**
@@ -71,36 +70,52 @@ public class DictAwareSolver extends HangmanSolver {
      */
     @Override
     public char makeGuess() {
+
+        // Iterating through every word in dictionary and removing those which don't have required length
         for (Iterator < String > i = dictionary.iterator(); i.hasNext();) {
             String w = i.next();
             if (w.length() != wordLen) {
                 i.remove();
             }
         }
+
+        // words ArrayList to record the letters in current dictionary
         ArrayList < String > words = new ArrayList < >();
         for (String w: dictionary) {
             words.add(w);
         }
-        map = new HashMap < >();
+
+        // initializing HashMap
+        letterCountHashMap = new HashMap < >();
         for (int a = 97; a < 123; a++) {
-            map.put((char) a, 0);
+            letterCountHashMap.put((char) a, 0);
         }
-        map.put('\'', 0);
+        letterCountHashMap.put('\'', 0);
+
+        // recording number of times a letter is present into the hashmap
         for (String w: words) {
-            for (Character c: map.keySet()) {
-                if (w.contains(c + "")) {
-                    map.replace(c, map.get(c) + 1);
+            for (Character letter: letterCountHashMap.keySet()) {
+                if (w.contains(letter + "")) {
+                    letterCountHashMap.replace(letter, letterCountHashMap.get(letter) + 1);
                 }
             }
         }
+
+        // Records the letter that is to be guessed
         char letter = '\0';
-        int max = 0;
-        for (char c: map.keySet()) {
-            if ((map.get(c) > max) && !guessedLetters.contains(c)) {
+
+        // Records the count of currently guessed letter
+        int count = 0;
+
+        // To get the next letter which have highest count and is not guessed yet
+        for (char c: letterCountHashMap.keySet()) {
+            if ((letterCountHashMap.get(c) > count) && !guessedLetters.contains(c)) {
                 letter = c;
-                max = map.get(c);
+                count = letterCountHashMap.get(c);
             }
         }
+
+        // Check if letter is already present, if not, add it in guessedLetters
         if (!guessedLetters.contains(letter)) {
             guessedLetters.add(letter);
         }
@@ -117,7 +132,6 @@ public class DictAwareSolver extends HangmanSolver {
      */
     @Override
     public void guessFeedback(char c, Boolean bGuess, ArrayList < ArrayList < Integer >> lPositions) {
-        //  Implement me!
         if (bGuess) {
             ArrayList < Integer > positions = lPositions.get(0);
             for (Iterator < String > i = dictionary.iterator(); i.hasNext();) {
