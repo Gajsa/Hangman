@@ -9,7 +9,7 @@ import java.util.*;
  */
 public class WheelOfFortuneGuessSolver extends HangmanSolver {
 
-
+    //complete dictionary backup
     HashSet<String> dictionaryBackup = null;
 
     //ArrayList dictionary to keep the whole given Dictionary
@@ -35,6 +35,7 @@ public class WheelOfFortuneGuessSolver extends HangmanSolver {
 
         guessedLetters = new HashSet<>();
         letterCountHashMap = new HashMap<>();
+        //Initialing HashMap with character frequencies
         for (int a = 97; a < 123; a++) {
             letterCountHashMap.put((char) a, 0);
         }
@@ -43,23 +44,25 @@ public class WheelOfFortuneGuessSolver extends HangmanSolver {
 
 
     /**
+     * Method to start new game
      *
      * @param wordLengths Length of words we are guessing for.
-     * @param maxTries
+     * @param maxIncorrectGuesses
      */
     @Override
-    public void newGame(int[] wordLengths, int maxTries) {
+    public void newGame(int[] wordLengths, int maxIncorrectGuesses) {
         System.out.println("New Game Has Started");
 
         wordLen = wordLengths;
 
         this.dictionary = new ArrayList<HashSet<String>>();
+
         for (int numWords = 0; numWords < wordLen.length; numWords++) {
             HashSet<String> dict = new HashSet<>(this.dictionaryBackup);
             this.dictionary.add(dict);
         }
 
-        // totalWordLength stores length of the word to be guessed
+        // totalWordLength stores length of the word(s) to be guessed
         String totalWordLength = "";
 
         // calculating length of the word(s) provided
@@ -68,7 +71,7 @@ public class WheelOfFortuneGuessSolver extends HangmanSolver {
         }
         System.out.println("Word(s) Lengths are: " + totalWordLength);
 
-        System.out.println("Total Number of guesses: " + maxTries);
+        System.out.println("Total Number of guesses: " + maxIncorrectGuesses);
         System.out.println("------------------------------------------------");
         System.out.println("------------------------------------------------");
     } // end of setWordLength()
@@ -90,7 +93,7 @@ public class WheelOfFortuneGuessSolver extends HangmanSolver {
             }
         }
 
-        // words ArrayList to record the letters in current dictionary
+        // adding word(s) whose length is equal to length of word to guess
         ArrayList<String> words = new ArrayList<String>();
         for (int numWords = 0; numWords < wordLen.length; numWords++) {
             for (Iterator<String> i = dictionary.get(numWords).iterator(); i.hasNext(); ) {
@@ -117,10 +120,7 @@ public class WheelOfFortuneGuessSolver extends HangmanSolver {
             }
         }
 
-        // Records the letter that is to be guessed
         char letter = '\0';
-
-        // Records the count of currently guessed letter
         int count = 0;
 
         // To get the next letter which have highest count and is not guessed yet
@@ -138,7 +138,6 @@ public class WheelOfFortuneGuessSolver extends HangmanSolver {
     } // end of makeGuess()
 
     /**
-     *
      * @param c
      * @param bGuess True if the character guessed is in one or more of the words, otherwise false.
      * @param lPositions
@@ -193,6 +192,7 @@ public class WheelOfFortuneGuessSolver extends HangmanSolver {
                 }
             }
         } else {
+            //removing all the words which contains incorrectly guessed letter
             for (int numWords = 0; numWords < wordLen.length; numWords++) {
                 dictionary.get(numWords).removeIf(w -> w.contains(cStr));
             }

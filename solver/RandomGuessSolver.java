@@ -51,7 +51,7 @@ public class RandomGuessSolver extends HangmanSolver {
 
 
     /**
-     * Method to guess a random character
+     * Method to guess a random letter
      *
      * @return letter method have guessed
      */

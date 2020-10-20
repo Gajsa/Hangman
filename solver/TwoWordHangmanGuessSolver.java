@@ -35,6 +35,7 @@ public class TwoWordHangmanGuessSolver extends HangmanSolver {
         }
         guessedLetters = new HashSet<>();
         letterCountHashMap = new HashMap<>();
+        //Initialing HashMap with character frequencies
         for (int a = 97; a < 123; a++) {
             letterCountHashMap.put((char) a, 0);
         }
@@ -84,7 +85,7 @@ public class TwoWordHangmanGuessSolver extends HangmanSolver {
             }
         }
 
-        // words ArrayList to record the letters in current dictionary
+        // adding word(s) whose length is equal to length of word to guess
         ArrayList<String> words = new ArrayList<String>();
         for (int a = 0; a < 2; a++) {
             for (Iterator<String> i = dictionary.get(a).iterator(); i.hasNext(); ) {
@@ -111,10 +112,7 @@ public class TwoWordHangmanGuessSolver extends HangmanSolver {
             }
         }
 
-        // Records the letter that is to be guessed
         char letter = '\0';
-
-        // Records the count of currently guessed letter
         int count = 0;
 
         // To get the next letter which have highest count and is not guessed yet
@@ -133,7 +131,6 @@ public class TwoWordHangmanGuessSolver extends HangmanSolver {
 
 
     /**
-     *
      * @param c
      * @param bGuess True if the character guessed is in one or more of the words, otherwise false.
      * @param lPositions
@@ -145,46 +142,28 @@ public class TwoWordHangmanGuessSolver extends HangmanSolver {
         // If letter is guessed right
         if (bGuess) {
             for (int numWords = 0; numWords < 2; numWords++) {
-//                ArrayList<Integer> positions = lPositions.get(numWords);
                 if (lPositions.get(numWords) != null) {
-//                    for (Iterator<String> iterator = dictionary.get(numWords).iterator(); iterator.hasNext(); ) {
-//                        String word = iterator.next();
-//                        for (Integer pos : lPositions.get(numWords)) {
-//                            if (word.charAt(pos) != cStr.charAt(0)) {
-//                                iterator.remove();
-//                                break;
-//                            }
-//                        }
-//                    }
 
                     // ArrayList of all words to be removed
                     ArrayList<String> removeWords = new ArrayList<>();
+
+                    // Iterate through dictionary
                     for (String word : dictionary.get(numWords)) {
                         for (Integer pos : lPositions.get(numWords)) {
+
+                            // Adding words to removeWords ArrayList which do not have guessed letter at the position
                             if (word.charAt(pos) != cStr.charAt(0)) {
                                 removeWords.add(word);
                                 break;
                             }
                         }
                     }
+                    // Removing all words in ArrayList removeWords from dictionary
                     dictionary.get(numWords).removeAll(removeWords);
 
-//                    for (Iterator<String> iterator = dictionary.get(numWords).iterator(); iterator.hasNext(); ) {
-//                        String word = iterator.next();
-//                        if (word.contains(cStr)) {
-//                            ArrayList<Integer> pos2 = new ArrayList<>();
-//                            for (int d = 0; d < word.length(); d++) {
-//                                if (word.charAt(d) == cStr.charAt(0)) {
-//                                    pos2.add(d);
-//                                }
-//                            }
-//                            if (!pos2.equals(lPositions.get(numWords))) {
-//                                iterator.remove();
-//                            }
-//                        }
-//                    }
-
                     removeWords.clear();
+
+                    // Iterate through dictionary
                     for (String word : dictionary.get(numWords)) {
                         if (word.contains(cStr)) {
                             ArrayList<Integer> pos2 = new ArrayList<>();
@@ -204,6 +183,7 @@ public class TwoWordHangmanGuessSolver extends HangmanSolver {
                 }
             }
         } else {
+            //removing all the words which contains incorrectly guessed letter
             for (int numWords = 0; numWords < 2; numWords++) {
                 dictionary.get(numWords).removeIf(w -> w.contains(cStr));
             }

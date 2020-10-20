@@ -32,6 +32,7 @@ public class DictAwareSolver extends HangmanSolver {
         this.dictionary = dictionary;
         guessedLetters = new HashSet<>();
         letterCountHashMap = new HashMap<>();
+        //Initialing HashMap with character frequencies
         for (int a = 97; a < 123; a++) {
             letterCountHashMap.put((char) a, 0);
         }
@@ -78,7 +79,7 @@ public class DictAwareSolver extends HangmanSolver {
             }
         }
 
-        // words ArrayList to record the letters in current dictionary
+        // adding word whose length is equal to length of word to guess
         ArrayList<String> words = new ArrayList<>();
         for (String w : dictionary) {
             words.add(w);
@@ -99,11 +100,7 @@ public class DictAwareSolver extends HangmanSolver {
                 }
             }
         }
-
-        // Records the letter that is to be guessed
         char letter = '\0';
-
-        // Records the count of currently guessed letter
         int count = 0;
 
         // To get the next letter which have highest count and is not guessed yet
@@ -122,7 +119,6 @@ public class DictAwareSolver extends HangmanSolver {
 
 
     /**
-     *
      * @param c
      * @param bGuess True if the character guessed is in one or more of the words, otherwise false.
      * @param lPositions
@@ -169,6 +165,7 @@ public class DictAwareSolver extends HangmanSolver {
             }
             dictionary.removeAll(removeWords);
         } else {
+            //removing all the words which contains incorrectly guessed letter
             dictionary.removeIf(word -> word.contains(cStr));
         }
     } // end of guessFeedback()
