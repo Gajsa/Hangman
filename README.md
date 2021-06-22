@@ -9,7 +9,7 @@
 
 Group - 17
 
-Dinesh Ramchandra Nayar (S3761972)
+Dinesh Ramchandra Nayar 
 
-Gajendra Singh Shekhawat (S3796520)
+Gajendra Singh Shekhawat 
 
